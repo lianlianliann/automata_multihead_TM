@@ -1,0 +1,14 @@
+# Visual Studio folders
+.vs/
+bin/
+obj/
+
+# Build outputs
+*.exe
+*.dll
+*.pdb
+
+# User-specific files
+*.user
+*.suo
+*.vscode/
