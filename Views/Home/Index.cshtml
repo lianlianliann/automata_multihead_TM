@@ -27,9 +27,10 @@
     </p>
 
     <div class="text-box-container">
-        <label for="name" style="font-weight:bold"> Enter Facebook Post:</label>
-        <input type="text" id="name" name="name">
-        <button class="analyze"> Analyze Post</button>
+        <form class="analysis-form" asp-controller="Home" asp-action="Analyze" method="post">
+            <label for="inputText" style="font-weight:bolder;"> Enter Facebook Post / Text</label>
+            <textarea name="inputText" id="name"></textarea>
+            <button type="submit" class="analyze">Analyze</button>
+        </form>
     </div>
-
 </div>  
