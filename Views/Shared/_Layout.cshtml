@@ -9,25 +9,13 @@
     <link rel="stylesheet" href="~/TM_MULTIHEAD_PHISHING_DETECTOR.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <div class="header-div"> 
-            
-            <h1 class="title"> <img class ="glass" src="~/imgs/glass.png"/> Fake News Detector</h1>
-            <p> Powered by Multihead Turing Machine Analysis</p>
-        </div>
-        
-    </header>
+   
     <div class="grid-container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - TM_MULTIHEAD_PHISHING_DETECTOR - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
