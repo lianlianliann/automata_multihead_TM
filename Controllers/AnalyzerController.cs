@@ -17,9 +17,9 @@ namespace TM_MULTIHEAD_PHISHING_DETECTOR.Controllers
             }
                 
             var engine = new MHTMEngine();
-            //var result = engine.Process(postText);
+            var result = engine.Process(postText);
 
-            //return View("Result", result);
+            return View("Result", result);
         }
     }
 }
