@@ -1,55 +1,44 @@
 ﻿namespace TM_MULTIHEAD_PHISHING_DETECTOR.Models
 {
-    
-    public class Head1 //emotional and lexical cues (exaggerated expressions, emotionally charged language)
+    public class Head1 // Emotional and lexical cues
     {
-        private HashSet<string> SuspiciousWords = new() {
-        "shocking", "breaking", "unbelievable", "bombshell", "exclusive",
-        "exposed", "urgent", "alert", "must", "never", "always","amazing","incredible","insane","crazy"
-    };
+        private HashSet<string> SuspiciousWords = new()
+        {
+            "shocking", "breaking", "unbelievable", "bombshell", "exclusive",
+            "exposed", "urgent", "alert", "must", "never", "always",
+            "amazing", "incredible", "insane", "crazy"
+        };
 
         public (double score, List<string> triggers) Run(string text)
         {
             // DFA-like simulation
-
-            var state = HeadStates.HeadState.q0;
             var triggers = new List<string>();
+            int flagCount = 0;
+            var state = HeadStates.HeadState.q0;
+
             var words = text.ToLower().Split(new char[] { ' ', '.', ',', '!', '?' }, StringSplitOptions.RemoveEmptyEntries);
 
-            double score = 0.0;
             foreach (var word in words)
             {
-                switch (state)
+                if (SuspiciousWords.Contains(word))
                 {
-                    case HeadStates.HeadState.q0:
-                        if (SuspiciousWords.Contains(word))
-                        {
-                            state = HeadStates.HeadState.q1;
-                            triggers.Add(word);
-                        }
-                        break;
-                    case HeadStates.HeadState.q1:
-                        // Stay in q1 for additional suspicious words
-                        if (SuspiciousWords.Contains(word))
-                        {
-                            triggers.Add(word);
-                        }
-                        else
-                        {
-                            state = HeadStates.HeadState.q2_accept;
-                        }
-                        break;
-                    case HeadStates.HeadState.q2_accept:
-                        // Once accepted, remain accepted
-                        break;
+                    triggers.Add(word);
+                    flagCount++;
 
-                    default:
-                        state = HeadStates.HeadState.q_reject;
-                        break;
+                    if (flagCount == 1)
+                        state = HeadStates.HeadState.q1;
+                    else if (flagCount >= 2)
+                        state = HeadStates.HeadState.q2_accept;
                 }
             }
 
-            score = .40 * triggers.Count;
+            // Final state check
+            if (flagCount < 2)
+                state = HeadStates.HeadState.q_reject;
+
+            double score = 0.0;
+            if (state == HeadStates.HeadState.q2_accept)
+                score = 0.40 * triggers.Count;
 
             return (score, triggers);
         }
