@@ -1,7 +1,98 @@
-﻿namespace TM_MULTIHEAD_PHISHING_DETECTOR.Views.Home
-{
-    public class Result
-    {
+﻿@model TM_MULTIHEAD_PHISHING_DETECTOR.Models.AnalysisResult
 
-    }
+@{
+    ViewData["Title"] = "Analysis Result";
 }
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">
+            <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #3b82f6;">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <h1>Analysis Result</h1>
+        </div>
+        <p class="header-subtitle">Powered by Multihead Turing Machine Analysis</p>
+    </div>
+
+    <!-- Original Text -->
+    <div class="original-text card">
+        <h4>Original Post:</h4>
+        <p>@Model.OriginalText</p>
+    </div>
+
+    <!-- Classification -->
+    <div class="result-card @(Model.Classification.ToLower())">
+        <div class="result-header">
+            <div class="result-title">
+                <svg class="icon @(Model.Classification.ToLower())" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <div>
+                    <h2>@Model.Classification.ToUpper()</h2>
+                    <p class="result-subtitle">Classification Result</p>
+                </div>
+            </div>
+
+            <div class="confidence-score">
+                <div class="confidence-number">@Model.ConfidenceScore.ToString("F0")%</div>
+                <p class="confidence-label">Confidence</p>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill @(Model.Classification.ToLower())" style="width:@Model.ConfidenceScore%;"></div>
+        </div>
+    </div>
+
+    <!-- Detection Details -->
+    <div class="detection-card">
+        <div class="detection-header">
+            <svg class="icon-small" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <h3>Detection Analysis (@(Model.Head1Triggers.Count + Model.Head2Triggers.Count + Model.Head3Triggers.Count) flags detected)</h3>
+        </div>
+
+        <!-- Head 1 -->
+        <div class="detection-section head1">
+            <h4>Head 1: Emotional & Lexical Cues (@Model.Head1Score.ToString("F1"))</h4>
+            <div class="tags">
+                @foreach (var trigger in Model.Head1Triggers)
+                {
+                <span class="tag head1">@trigger</span>
+                }
+            </div>
+        </div>
+
+        <!-- Head 2 -->
+        <div class="detection-section head2">
+            <h4>Head 2: Structural Patterns (@Model.Head2Score.ToString("F1"))</h4>
+            <div class="tags">
+                @foreach (var trigger in Model.Head2Triggers)
+                {
+                <span class="tag head2">@trigger</span>
+                }
+            </div>
+        </div>
+
+        <!-- Head 3 -->
+        <div class="detection-section head3">
+            <h4>Head 3: Repetition Detection (@Model.Head3Score.ToString("F1"))</h4>
+            <div class="tags">
+                @foreach (var trigger in Model.Head3Triggers)
+                {
+                <span class="tag head3">@trigger</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="button-group" style="margin-top: 20px;">
+        <a href="@Url.Action("Index", "Home")" class="btn-secondary">Analyze Another Post</a>
+    </div>
+</div>
