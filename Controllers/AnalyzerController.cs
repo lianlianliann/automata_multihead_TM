@@ -22,6 +22,12 @@ namespace TM_MULTIHEAD_PHISHING_DETECTOR.Controllers
                 return RedirectToAction("Index");
             }
 
+            if (inputText.Length > 280)
+            {   
+                return RedirectToAction("Index");
+            }
+
+
             var engine = new MHTMEngine();
             var result = engine.Process(inputText );
 
